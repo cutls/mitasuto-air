@@ -1,4 +1,8 @@
 {
+	"scripts": {
+		"build": "tsc",
+		"buildAndLeaflet": "tsc && ts-node utils/makeCsv.ts"
+	},
 	"dependencies": {
 		"puppeteer": "^22.0.0"
 	},
