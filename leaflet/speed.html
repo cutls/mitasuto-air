@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin="" />
@@ -51,7 +52,7 @@
   <div id="view_map" style="height: 100vh;"></div>
   <script type="text/javascript">
     //緯度,経度,ズーム
-    var map = L.map('view_map').setView([36.7105552, 137.2012866], 12);
+    var map = L.map('view_map').setView([36.7105552, 137.2012866], 13);
     // OpenStreetMap から地図画像を読み込む
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
