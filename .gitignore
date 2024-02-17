@@ -2,5 +2,4 @@ node_modules
 dist
 *.txt
 *.csv
-*.data.js
 .DS_Store
