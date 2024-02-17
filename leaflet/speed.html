@@ -11,10 +11,44 @@
     crossorigin=""></script>
   <script src="speed.data.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/leaflet-extras/leaflet.sprite@gh-pages/dist/leaflet.sprite.js"></script>
+
+  <style>
+    .legend {
+        background: white;
+        padding: 5px;
+    }
+    .circle {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        border-radius: 50%;
+    }
+    .c5 {
+        background-color: #20bf00;
+    }
+    .c4 {
+        background-color: #7fd61c;
+    }
+    .c3 {
+        background-color: #1caed6;
+    }
+    .c2 {
+        background-color: #9ddaeb;
+    }
+    .c1 {
+        background-color: #ed5818;
+    }
+    .c0 {
+        background-color: #e30000;
+    }
+    .c-1 {
+        background-color: #bdbdbd;
+    }
+</style>
 </head>
 
-<body>
-  <div id="view_map" style="height: 500px;"></div>
+<body style="padding: 0">
+  <div id="view_map" style="height: 100vh;"></div>
   <script type="text/javascript">
     //緯度,経度,ズーム
     var map = L.map('view_map').setView([36.7105552, 137.2012866], 12);
@@ -28,19 +62,19 @@
     for (const s of speeds) {
       const speed = s[2]
       let color
-      if (speed <= 0) {
+      if (speed <= 0) { // -1
         color = '#bdbdbd'
-      } else if (speed > 100) {
+      } else if (speed > 100) { // 0
         color = '#e30000'
-      } else if (speed > 40) {
+      } else if (speed >= 40) { // 5
         color = '#20bf00'
-      } else if (speed > 20) {
+      } else if (speed >= 20) { // 4
         color = '#7fd61c'
-      } else if (speed > 10) {
+      } else if (speed >= 10) { // 3
         color = '#1caed6'
-      } else if (speed > 5) {
-        color = '#d67f1c'
-      } else {
+      } else if (speed >= 5) { // 2
+        color = '#9ddaeb'
+      } else { // 1
         color = '#ed5818'
       }
       var popup = L.popup();
@@ -51,6 +85,14 @@
           .openOn(map);
       });
     }
+
+    var legend = L.control({ position: 'bottomright' });
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = `<div><span class="circle c5"></span> 40Mbps〜</div><div><span class="circle c4"></span> 20Mbps〜</div><div><span class="circle c3"></span> 10Mbps〜</div><div><span class="circle c2"></span> 5Mbps〜</div><div><span class="circle c1"></span> 1Mbps〜</div><div><span class="circle c0"></span> 〜1Mbps</div><div><span class="circle c-1"></span> 測定不可</div>`
+            return div;
+        };
+        legend.addTo(map);
 
   </script>
 </body>

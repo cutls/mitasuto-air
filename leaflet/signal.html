@@ -2,57 +2,97 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-    crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-    crossorigin=""></script>
-  <script src="signal.data.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/leaflet-extras/leaflet.sprite@gh-pages/dist/leaflet.sprite.js"></script>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+    <script src="signal.data.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/leaflet-extras/leaflet.sprite@gh-pages/dist/leaflet.sprite.js"></script>
+    <style>
+        .legend {
+            background: white;
+            padding: 5px;
+        }
+        .circle {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+        }
+        .c5 {
+            background-color: #20bf00;
+        }
+        .c4 {
+            background-color: #7fd61c;
+        }
+        .c3 {
+            background-color: #1caed6;
+        }
+        .c2 {
+            background-color: #9ddaeb;
+        }
+        .c1 {
+            background-color: #ed5818;
+        }
+        .c0 {
+            background-color: #e30000;
+        }
+        .c-1 {
+            background-color: #bdbdbd;
+        }
+    </style>
 </head>
 
-<body>
-  <div id="view_map" style="height: 500px;"></div>
-  <script type="text/javascript">
-    //緯度,経度,ズーム
-    var map = L.map('view_map').setView([36.7105552,137.2012866], 12);
-    // OpenStreetMap から地図画像を読み込む
-    L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, '
-    }).addTo(map);
+<body style="padding: 0">
+    <div id="view_map" style="height: 100vh;"></div>
+    <script type="text/javascript">
+        //緯度,経度,ズーム
+        var map = L.map('view_map').setView([36.7105552, 137.2012866], 12);
+        // OpenStreetMap から地図画像を読み込む
+        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, '
+        }).addTo(map);
 
-    var popup = L.popup();
-    for (const s of signals) {
-      const signal = s[2]
-      let color
-      if (signal === -1) {
-        color = '#bdbdbd'
-      } else if (signal === 5) {
-        color = '#20bf00'
-      } else if (signal === 4) {
-        color = '#7fd61c'
-      } else if (signal === 3) {
-        color = '#1caed6'
-      } else if (signal === 2) {
-        color = '#d67f1c'
-      } else if (signal === 1) {
-        color = '#ed5818'
-      } else { // 0
-        color = '#e30000'
-      }
-      var popup = L.popup();
-      L.circle([s[0], s[1]], { color, fillOpacity: 1, radius: 100 }).addTo(map).on('click', function (e) {
-        popup
-          .setLatLng(e.latlng)
-          .setContent(`${signal} / 5`)
-          .openOn(map);
-      });
-    }
+        var popup = L.popup();
+        for (const s of signals) {
+            const signal = s[2]
+            let color
+            if (signal === -1) {
+                color = '#bdbdbd'
+            } else if (signal === 5) {
+                color = '#20bf00'
+            } else if (signal === 4) {
+                color = '#7fd61c'
+            } else if (signal === 3) {
+                color = '#1caed6'
+            } else if (signal === 2) {
+                color = '#9ddaeb'
+            } else if (signal === 1) {
+                color = '#ed5818'
+            } else { // 0
+                color = '#e30000'
+            }
+            var popup = L.popup();
+            L.circle([s[0], s[1]], { color, fillOpacity: 1, radius: 100 }).addTo(map).on('click', function (e) {
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent(`${signal} / 5`)
+                    .openOn(map);
+            });
+        }
+        var legend = L.control({ position: 'bottomright' });
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = `<div><span class="circle c5"></span> 電波強度5</div><div><span class="circle c4"></span> 電波強度4</div><div><span class="circle c3"></span> 電波強度3</div><div><span class="circle c2"></span> 電波強度2</div><div><span class="circle c1"></span> 電波強度1</div><div><span class="circle c0"></span> 電波強度0</div><div><span class="circle c-1"></span> 測定不可</div>`
+            return div;
+        };
+        legend.addTo(map);
 
-  </script>
+    </script>
 </body>
 
 </html>

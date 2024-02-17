@@ -21,14 +21,25 @@ const main = () => {
         if (!ps) continue
         signalArr.push([...ps, parseInt(s[1], 10)])
     }
+    for (let i = signalArr.length - 1; i > 0; i--) {
+        const r = Math.floor(Math.random() * (i + 1))
+        const tmp: any = signalArr[i]
+        signalArr[i] = signalArr[r]
+        signalArr[r] = tmp
+    }
     fs.writeFileSync('leaflet/signal.data.js', `const signals = ${JSON.stringify(signalArr)}`)
-
 
     const speedArr = []
     for (const s of speedLines) {
         const ps = findPosition(s[0])
         if (!ps) continue
         speedArr.push([...ps, parseFloat(s[1])])
+    }
+    for (let i = speedArr.length - 1; i > 0; i--) {
+        const r = Math.floor(Math.random() * (i + 1))
+        const tmp: any = speedArr[i]
+        speedArr[i] = speedArr[r]
+        speedArr[r] = tmp
     }
     fs.writeFileSync('leaflet/speed.data.js', `const speeds = ${JSON.stringify(speedArr)}`)
 
