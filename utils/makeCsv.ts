@@ -19,6 +19,7 @@ const main = () => {
     for (const s of signalLines) {
         const ps = findPosition(s[0])
         if (!ps) continue
+        if (s[1] === '-1') continue
         signalArr.push([...ps, parseInt(s[1], 10)])
     }
     for (let i = signalArr.length - 1; i > 0; i--) {
